@@ -1,5 +1,5 @@
 module HW02 where
-
+import qualified Data.List as L
 -- Mastermind -----------------------------------------
 
 -- A peg can be one of six colors
@@ -58,17 +58,23 @@ matches x y = sum $ minInt (countColors x) (countColors y)
 
 -- Construct a Move from a guess given the actual code
 getMove :: Code -> Code -> Move
-getMove = undefined
+getMove secret guess = Move guess exactMatch (totalMatch - exactMatch)
+  where exactMatch = (exactMatches secret guess)
+        totalMatch = (matches secret guess)
 
 -- Exercise 4 -----------------------------------------
 
 isConsistent :: Move -> Code -> Bool
-isConsistent = undefined
+isConsistent move@(Move guess _ _) code =
+  compareMove move (getMove code guess)
+  where compareMove (Move _ e1 t1) (Move _ e2 t2)
+          | e1 == t1 && e2 == t2 = True
+          | otherwise = False
 
 -- Exercise 5 -----------------------------------------
 
 filterCodes :: Move -> [Code] -> [Code]
-filterCodes = undefined
+filterCodes move codes = L.filter (\x -> isConsistent move x) codes
 
 -- Exercise 6 -----------------------------------------
 
