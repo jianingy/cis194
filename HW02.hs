@@ -79,12 +79,14 @@ filterCodes move codes = L.filter (\x -> isConsistent move x) codes
 -- Exercise 6 -----------------------------------------
 
 allCodes :: Int -> [Code]
-allCodes = undefined
+allCodes 0 = []
+allCodes 1 = [[x] | x <- colors]
+allCodes m = [x : y | x <- colors, y <- allCodes (m - 1)]
 
 -- Exercise 7 -----------------------------------------
 
 solve :: Code -> [Move]
-solve = undefined
+solve secret = [getMove secret x | x <- (allCodes 4)]
 
 -- Bonus ----------------------------------------------
 
